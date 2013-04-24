@@ -18,11 +18,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         SharedData sharedData = new SharedData();
+
+        //add the initial tasks
         Task[] prt = {new PageRetrieverTask("http://www.yahoo.com/",sharedData)};
         sharedData.taskQueue.addTasks((List<Task>)Arrays.asList(prt));
 
-        ExecutionThread executionThread = new ExecutionThread(sharedData);
 
+        //begin one thread of execution
+        ExecutionThread executionThread = new ExecutionThread(sharedData);
         executionThread.run();
     }
 }
