@@ -1,16 +1,21 @@
 package Tasks;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 /**
  * A stub for the PageParserTask
  */
 public class PageParserTask extends Task {
     /**The priority of these tasks. Higher is Better.**/
     public static final int PRIORITY = 0;
-    private final String pageText;
+    private final Document pageText;
 
     public PageParserTask(String pageText, SharedData sharedData) {
         super(sharedData, PRIORITY);
-        this.pageText = pageText;
+        Document doc = Jsoup.parse(pageText);
+        this.pageText = doc;
     }
 
     @Override
