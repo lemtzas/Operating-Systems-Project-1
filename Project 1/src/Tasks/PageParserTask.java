@@ -10,13 +10,14 @@ import org.jsoup.nodes.Document;
 public class PageParserTask extends Task {
     /**The priority of these tasks. Higher is Better.**/
     public static final int PRIORITY = 0;
-    private final Document pageText;
+    private final String pageText;
 
     public PageParserTask(String pageText, SharedData sharedData) {
         super(sharedData, PRIORITY);
         Document doc = Jsoup.parse(pageText);
-        this.pageText = doc;
+        this.pageText = doc.title() + doc.head().html() + doc.body().html();
     }
+    
 
     @Override
     public void run() {
