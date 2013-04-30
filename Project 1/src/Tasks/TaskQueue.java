@@ -1,33 +1,40 @@
 package Tasks;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
+import sun.org.mozilla.javascript.internal.ast.ConditionalExpression;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A multi-threaded task queue
  */
 public class TaskQueue {
+    private static final int SIZE_LIMIT = 100;
+
     private final PriorityQueue<Task> taskQueue = new PriorityQueue<Task>();
-    private final Mutex mutex = new Mutex();
+    private final Lock lock = new ReentrantLock();
+    private final Condition notFull = lock.newCondition();
+    private final Condition notEmpty = lock.newCondition();
 
     public final Task getTask() {
+        Task task = null;
+        lock.lock();
         try {
-            Task task = null;
-            mutex.acquire();
-            try {
-                //TODO: Make this a blocking call if queue is empty
-                task = taskQueue.poll();
-            } finally {
-                mutex.release();
-                return task;
-            }
-        } catch(InterruptedException ie) {
-            // ...
+            //TODO: Make this a blocking call if queue is empty
+            if(taskQueue.isEmpty())
+                notEmpty.await();
+
+            task = taskQueue.poll();
+            notFull.signal();
+        } finally {
+            lock.unlock();
+            return task;
         }
-        return null;
     }
 
     public final int getTaskCount() {
@@ -35,16 +42,16 @@ public class TaskQueue {
     }
 
     public void addTasks(Collection<Task> tasks) {
-        try {
-            mutex.acquire();
+            lock.lock();
             try {
-                //TODO: Task Queue size limit?
+                if(SIZE_LIMIT != -1 && taskQueue.size() >= SIZE_LIMIT)
+                    notFull.await();
                 taskQueue.addAll(tasks);
+                notEmpty.signal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             } finally {
-                mutex.release();
+                lock.unlock();
             }
-        } catch(InterruptedException ie) {
-            // ...
-        }
     }
 }
