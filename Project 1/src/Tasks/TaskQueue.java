@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * A multi-threaded task queue
  */
 public class TaskQueue {
-    private static final int SIZE_LIMIT = 100;
+    private static final int SIZE_LIMIT = -1;
 
     private final PriorityQueue<Task> taskQueue = new PriorityQueue<Task>();
     private final Lock lock = new ReentrantLock();
