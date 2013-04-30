@@ -14,18 +14,20 @@ import java.util.Set;
  * The Entry Point
  */
 public class Main {
+    private static final String ROOT = "http://faculty.washington.edu/gmobus/";
+
     private Main() {}
 
     public static void main(String[] args) throws Exception {
         SharedData sharedData = new SharedData();
 
         //add the initial tasks
-        Task[] prt = {new PageRetrieverTask("http://www.yahoo.com/",sharedData)};
-        sharedData.taskQueue.addTasks((List<Task>)Arrays.asList(prt));
+        Task[] prt = {new PageRetrieverTask(ROOT,sharedData)};
+        sharedData.taskQueue.addTasks(Arrays.asList(prt));
 
 
         //begin one thread of execution
-        ExecutionThread executionThread = new ExecutionThread(sharedData);
+        ExecutionThread executionThread = new ExecutionThread(sharedData,true);
         executionThread.run();
     }
 }

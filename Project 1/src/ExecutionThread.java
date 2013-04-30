@@ -8,15 +8,23 @@ import java.util.Set;
  */
 public class ExecutionThread implements Runnable {
     private final SharedData sharedData;
-    public ExecutionThread(SharedData sharedData) {
+    private final boolean IOThread;
+
+    /**
+     * Instantiates an Execution Thread
+     * @param sharedData Data in the shared space
+     * @param IOThread Should this thread perform I/O?
+     */
+    public ExecutionThread(SharedData sharedData, boolean IOThread) {
         this.sharedData = sharedData;
+        this.IOThread = IOThread;
     }
 
     @Override
     public void run() {
         Task task = null;
         while(!sharedData.isDone()) {
-            task = sharedData.taskQueue.getTask();
+            task = sharedData.taskQueue.getTask(IOThread);
             if(task != null) {
                 //run the task
                 task.run();

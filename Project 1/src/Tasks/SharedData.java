@@ -8,6 +8,14 @@ import java.util.PriorityQueue;
 public class SharedData {
     public final TaskQueue taskQueue = new TaskQueue();
 
+    /**
+     * @return a snapshot of the current stats
+     */
+    public DataSnapshot getSnapshot() {
+        return new DataSnapshot();
+    }
+
+
     private int processedPageCount = 0;
     private int processedTaskCount = 0;
     public final int getProcessedPageCount() {

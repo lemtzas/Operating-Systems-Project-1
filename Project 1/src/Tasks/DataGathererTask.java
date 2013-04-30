@@ -13,8 +13,11 @@ public class DataGathererTask extends Task {
 
     @Override
     public void run() {
+        System.out.println("start DataGathererTask");
         //TODO: Update Stats.
         //TODO: Add stats to output Queue
         //TODO: Tell GUI there are stats to display
+        this.addGeneratedTask(new ReporterTask(getSharedData(),getSharedData().getSnapshot()));
+        System.out.println("end DataGathererTask");
     }
 }

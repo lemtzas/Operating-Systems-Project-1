@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents a task for use on the task priority queue
+ * Represents a task for use on the task priority queue.
+ *
+ * Use IOTask for Tasks that need to perform I/O serially. Not doing so may result in unexpected behavior.
  */
 public abstract class Task implements Runnable, Comparable<Task> {
     /**

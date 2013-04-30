@@ -17,20 +17,26 @@ public class TaskQueue {
     private static final int SIZE_LIMIT = -1;
 
     private final PriorityQueue<Task> taskQueue = new PriorityQueue<Task>();
+    private final PriorityQueue<Task> IOQueue = new PriorityQueue<Task>();
     private final Lock lock = new ReentrantLock();
-    private final Condition notFull = lock.newCondition();
-    private final Condition notEmpty = lock.newCondition();
+    private final Condition notFull    = lock.newCondition();
+    private final Condition notEmpty   = lock.newCondition();
+    private final Condition IOnotEmpty = lock.newCondition();
 
-    public final Task getTask() {
+    public final Task getTask(boolean IOThread) {
         Task task = null;
         lock.lock();
         try {
-            //TODO: Make this a blocking call if queue is empty
-            if(taskQueue.isEmpty())
-                notEmpty.await();
+            //if this is from an IOThread, check for an IO process each time
+            if(IOThread && !IOQueue.isEmpty()) {
+                task = IOQueue.poll();
+            } else {
+                if(taskQueue.isEmpty())
+                    notEmpty.await();
 
-            task = taskQueue.poll();
-            notFull.signal();
+                task = taskQueue.poll();
+                notFull.signal();
+            }
         } finally {
             lock.unlock();
             return task;
@@ -46,8 +52,21 @@ public class TaskQueue {
             try {
                 if(SIZE_LIMIT != -1 && taskQueue.size() >= SIZE_LIMIT)
                     notFull.await();
-                taskQueue.addAll(tasks);
-                notEmpty.signal();
+
+                boolean IOTask = false;
+                boolean task = false;
+
+                for(Task t: tasks) {
+                    if(t instanceof IOTask) {
+                        IOQueue.add(t);
+                        IOTask = true;
+                    } else {
+                        taskQueue.add(t);
+                        task = true;
+                    }
+                }
+                if(IOTask)IOnotEmpty.signal();
+                if(task)notEmpty.signal();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
