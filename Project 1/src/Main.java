@@ -19,12 +19,19 @@ public class Main {
     private Main() {}
 
     public static void main(String[] args) throws Exception {
-        SharedData sharedData = new SharedData();
+        SharedData sharedData = new SharedData(new String[]{"intelligence","artificial","agent","university","research","science","robot"}, 500);
 
         //add the initial tasks
         Task[] prt = {new PageRetrieverTask(ROOT,sharedData)};
         sharedData.taskQueue.addTasks(Arrays.asList(prt));
 
+
+        //begin several threads
+        (new Thread(new ExecutionThread(sharedData,false))).start();
+        (new Thread(new ExecutionThread(sharedData,false))).start();
+        (new Thread(new ExecutionThread(sharedData,false))).start();
+        (new Thread(new ExecutionThread(sharedData,false))).start();
+        (new Thread(new ExecutionThread(sharedData,false))).start();
 
         //begin one thread of execution
         ExecutionThread executionThread = new ExecutionThread(sharedData,true);

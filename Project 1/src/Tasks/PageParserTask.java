@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashMap;
+
 /**
  * A stub for the PageParserTask
  */
@@ -27,7 +29,10 @@ public class PageParserTask extends Task {
 
     @Override
     public void run() {
-        System.out.println("start PageParserTask (" + URL + ")");
+        System.out.println("PageParserTask (" + URL + ")");
+
+        final long startTime = System.currentTimeMillis();
+
         Document doc = Jsoup.parse(pageText, URL);
 
         //follow valid links
@@ -43,8 +48,25 @@ public class PageParserTask extends Task {
         }
 
 
-        String text = doc.title() + doc.head().html() + doc.body().html();
+        //String text = doc.title() + doc.head().html() + doc.body().html();
+        String text = pageText;
+
+        //count the words
+        HashMap<String,Integer> counts = new HashMap<String,Integer>();
+        for(String s : getSharedData().keywords) {
+            int i = -1;
+            int count = 0;
+            while((i = text.indexOf(s,i+1)) >= 0)
+                count++;
+            counts.put(s,count);
+        }
+
 
         this.addGeneratedTask(new DataGathererTask(getSharedData(), text, doc));
+
+        //update stats
+        getSharedData().parsedPage();
+        getSharedData().updateCounts(counts);
+        getSharedData().addParseTime(System.currentTimeMillis() - startTime);
     }
 }

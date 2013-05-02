@@ -35,9 +35,9 @@ public class ExecutionThread implements Runnable {
             }
             //are we done yet?
             //TODO: Make sure this checks for active tasks
-            if(sharedData.taskQueue.getTaskCount() == 0) {
-                sharedData.setDone();
-            }
+//            if(sharedData.taskQueue.getTaskCount() == 0) {
+//                sharedData.setDone();
+//            }
         }
     }
 }
