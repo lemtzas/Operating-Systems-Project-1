@@ -14,17 +14,18 @@ public class PageParserTask extends Task {
 
     public PageParserTask(String pageText, SharedData sharedData) {
         super(sharedData, PRIORITY);
-        Document doc = Jsoup.parse(pageText);
-        this.pageText = doc.title() + doc.head().html() + doc.body().html();
     }
     
 
     @Override
     public void run() {
         System.out.println("start PageParserTask");
-        //parse the text
-        //add Reporter task (to output shit to the screen)
-        //add PageBuffer tasks (for each link)
+        Document doc = Jsoup.parse(pageText);
+        this.pageText = doc.title() + doc.head().html() + doc.body().html();
+        
+		//add Reporter task (to output shit to the screen) and increment the number of pages parsed?
+		
+        this.addGeneratedTask(new DataGathererTask(SharedData, pageText, doc));
         System.out.println(pageText.length());
         System.out.println("end PageParserTask");
     }

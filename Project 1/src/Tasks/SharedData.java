@@ -34,8 +34,7 @@ public class SharedData {
         //TODO: Make this thread safe
         processedTaskCount++;
     }
-	public final 
-
+	
     private boolean done = false;
     public boolean isDone() {
         //TODO: Make this thread safe
