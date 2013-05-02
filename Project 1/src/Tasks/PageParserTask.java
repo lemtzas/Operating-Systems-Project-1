@@ -7,7 +7,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.sound.midi.Patch;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A stub for the PageParserTask
@@ -35,8 +38,20 @@ public class PageParserTask extends Task {
 
         Document doc = Jsoup.parse(pageText, URL);
 
+
+        //count the words
+        int wordCount = 0;
+        if(doc != null && doc.body() != null) {
+            Pattern p = Pattern.compile("\\w+");
+            Matcher m = p.matcher(doc.body().text());
+            while(m.find())
+                wordCount++;
+        }
+
+
         //follow valid links
         Elements links = doc.select("a[href]");
+        int linkCount = 0;
         for(Element link : links) {
             String linkText = link.attr("abs:href");
             //System.out.println("  site (" + urlValidator.isValid(linkText) + "+"+(linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))+"): " + linkText);
@@ -44,6 +59,7 @@ public class PageParserTask extends Task {
                     //only follow specified files (hackish way)
                     (linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))) {
                 this.addGeneratedTask(new PageRetrieverTask(linkText,getSharedData()));
+                linkCount++;
             }
         }
 
@@ -62,11 +78,13 @@ public class PageParserTask extends Task {
         }
 
 
-        this.addGeneratedTask(new DataGathererTask(getSharedData(), text, doc));
+        this.addGeneratedTask(new DataGathererTask(getSharedData(), URL, linkCount));
 
         //update stats
         getSharedData().parsedPage();
         getSharedData().updateCounts(counts);
+        getSharedData().addLinks(linkCount);
+        getSharedData().addWords(wordCount);
         getSharedData().addParseTime(System.currentTimeMillis() - startTime);
     }
 }

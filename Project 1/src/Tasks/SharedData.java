@@ -98,4 +98,16 @@ public class SharedData {
             this.done = true;
         dataSnapshotLock.unlock();
     }
+
+    public void addLinks(int linkCount) {
+        dataSnapshotLock.lock();
+        dataSnapshot.urlCount+= linkCount;
+        dataSnapshotLock.unlock();
+    }
+
+    public void addWords(int wordCount) {
+        dataSnapshotLock.lock();
+        dataSnapshot.wordCount += wordCount;
+        dataSnapshotLock.unlock();
+    }
 }

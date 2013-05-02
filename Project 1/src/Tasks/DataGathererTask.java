@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
  */
 public class DataGathererTask extends Task {
     public static final int PRIORITY = -1;
-    private final String HTML;
-    public DataGathererTask(SharedData sharedData, String parsedHTML, Document doc) {
+    private final String page;
+    public DataGathererTask(SharedData sharedData, String page, int linkCount) {
         super(sharedData,PRIORITY);
-        this.HTML = parsedHTML;
+        this.page = page;
     }
 
     @Override
@@ -24,6 +24,7 @@ public class DataGathererTask extends Task {
 
         getSharedData().updateRuntime();
         DataSnapshot snapshot = getSharedData().getSnapshot();
+        snapshot.pageParsed = page;
         this.addGeneratedTask(new ReporterTask(getSharedData(),snapshot));
 
         getSharedData().checkOvermax();

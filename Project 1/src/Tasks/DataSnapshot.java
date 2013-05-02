@@ -17,8 +17,8 @@ public class DataSnapshot {
     public int pageLimit;				// Max number of pages that can be parsed
     public long totalParseTime;		// Total time spent parsing pages
     public long totalRunTime;		// Total time spent parsing pages
-	
-	public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
+
+    public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
 		testMap = new HashMap<String, Integer>();
 		pageLimit = pLimit;
 		pageParsed = pParsed;
@@ -51,13 +51,15 @@ public class DataSnapshot {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        String print = "%-15s\t%2.5f\t\t\t\t%d";
+        String print = "%-15s\t%8.5f\t\t\t\t%d";
 
         sb.append("Parsed: ").append(pageParsed).append("\n");
         sb.append("Pages Retrieved: ").append(pageCount).append("\n");
+        sb.append("Average words per page: ").append(wordCount/pageCount).append("\n");
+        sb.append("Average URLs per page: ").append(urlCount/pageCount).append("\n");
         sb.append("\tKeyword\t\tAve. hits per page\t\tTotal hits\n");
         for(String s : testMap.keySet())
-            sb.append("  ").append(String.format(print,s,testMap.get(s)/(double)pageCount,testMap.get(s))).append("\n");
+            sb.append("  ").append(String.format(print, s, testMap.get(s) / (double) pageCount, testMap.get(s))).append("\n");
         sb.append("Page Limit: ").append(pageLimit).append("\n");
         sb.append("Average Parse time per page: ").append(totalParseTime / (double) pageCount / 1000d).append("\n");
         sb.append("Total running time: ").append(totalRunTime / 1000d).append("\n");
