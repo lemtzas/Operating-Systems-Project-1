@@ -16,13 +16,13 @@ public class DataGathererTask extends Task {
     @Override
     public void run() {
         System.out.println("start DataGathererTask");
-		final Pattern p = Pattern.compile(HTML, Pattern.CASE_INSENSITIVE);
-		for(int i=0; i<2 ; i++){			// 2 is a placeholder for the number of words to be scanned for
-			Matcher m = p.Matcher("");  	// "" placeholder for the words being scanned
-			while(m.find()) {
-				//access and increment DataSnapshot
-			}
-		}
+//		final Pattern p = Pattern.compile(HTML, Pattern.CASE_INSENSITIVE);
+//		for(int i=0; i<2 ; i++){			// 2 is a placeholder for the number of words to be scanned for
+//			Matcher m = p.Matcher("");  	// "" placeholder for the words being scanned
+//			while(m.find()) {
+//				//access and increment DataSnapshot
+//			}
+//		}
 		
         //TODO: Update Stats.
         //TODO: Add stats to output Queue

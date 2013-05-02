@@ -1,10 +1,13 @@
 package Tasks;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Stores a snapshot of the rolling data statistics
  */
 public class DataSnapshot {
-    private Map<String, int> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
+    private Map<String, Integer> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
 	private String pageParsed; 			// Original page input to the parser
 	private int wordCount; 				// Word count for all pages parsed
 	private int urlCount;				// url count for all pages parsed
@@ -13,7 +16,7 @@ public class DataSnapshot {
 	private long totalParseTime;		// Total time spent parsing pages
 	
 	public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
-		testMap = new Map<String, int>();
+		testMap = new HashMap<String, Integer>();
 		pageLimit = pLimit;
 		pageParsed = pParsed;
 		wordCount = 0;
@@ -23,10 +26,10 @@ public class DataSnapshot {
 	}
 	
 	public DataSnapshot() {
-		super(0, "");
+		this(0, "");
 	}
 	
-	public addWord (String word) {
+	public void addWord (String word) {
 		testMap.put(word, 0);
 	}
 	
@@ -43,7 +46,7 @@ public class DataSnapshot {
 	}
 	
 	public void incURLCount () {
-		urlCount++
+		urlCount++;
 	}
 	
 	public int getWordCount() {
