@@ -5,7 +5,7 @@ package Tasks;
  */
 public class DataGathererTask extends Task {
     public static final int PRIORITY = -1;
-    final String HTML;
+    private final String HTML;
     public DataGathererTask(SharedData sharedData, String parsedHTML) {
         super(sharedData,PRIORITY);
         this.HTML = parsedHTML;
@@ -14,7 +14,7 @@ public class DataGathererTask extends Task {
     @Override
     public void run() {
         System.out.println("start DataGathererTask");
-		Pattern p = Pattern.compile(HTML, Pattern.CASE_INSENSITIVE);
+		final Pattern p = Pattern.compile(HTML, Pattern.CASE_INSENSITIVE);
 		for(int i=0; i< ; i++){
 			Matcher m = p.Matcher("");
 			while(m.find()) {

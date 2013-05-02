@@ -4,14 +4,13 @@ package Tasks;
  * Stores a snapshot of the rolling data statistics
  */
 public class DataSnapshot {
-    Map<String, int> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
-	String pageParsed; 			// Original page input to the parser
-	int wordCount; 				// Word count for all pages parsed
-	int urlCount;				// url count for all pages parsed
-	int pageCount;				// Number of pages parsed
-	int pageLimit;				// Max number of pages that can be parsed
-	long totalParseTime;		// Total time spent parsing pages
-	
+    private Map<String, int> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
+	private String pageParsed; 			// Original page input to the parser
+	private int wordCount; 				// Word count for all pages parsed
+	private int urlCount;				// url count for all pages parsed
+	private int pageCount;				// Number of pages parsed
+	private int pageLimit;				// Max number of pages that can be parsed
+	private long totalParseTime;		// Total time spent parsing pages
 	
 	public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
 		testMap = new Map<String, int>();
@@ -22,12 +21,25 @@ public class DataSnapshot {
 		pageCount = 0;
 		pageLimit = pLimit;
 	}
+	
 	public DataSnapshot() {
 		super(0, "");
 	}
 	
+	public addWord (String word) {
+		testMap.put(word, 0);
+	}
+	
 	public void setWordCount (int count) {
 		wordCount = count;
+	}
+	
+	public void setPageCount(int count) {
+		pageCount = count;
+	}
+	
+	public void setPageLimit(int count) {
+		pageLimit = count;
 	}
 	
 	public void incURLCount () {
@@ -36,6 +48,14 @@ public class DataSnapshot {
 	
 	public int getWordCount() {
 		return wordCount;
+	}
+	
+	public int getPageCount() {
+		return pageCount;
+	}
+	
+	public int getPageLimit() {
+		return pageLimit;
 	}
 	
 	public int getURLCount() {
