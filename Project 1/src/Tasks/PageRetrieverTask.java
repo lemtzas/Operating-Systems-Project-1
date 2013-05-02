@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class PageRetrieverTask extends Task {
     private static final ConcurrentSkipListSet<String> accessedPages = new ConcurrentSkipListSet<String>();
     private static final String QUESTION_EVERYTHING = "questioneverything.typepad.com";
+    private static final String USER_AGENT = "Batman";
 
     /**The priority of these tasks. Higher is Better.**/
     public static final int PRIORITY = 1;
@@ -31,11 +32,14 @@ public class PageRetrieverTask extends Task {
      * Checks the robots page for the
      * @return true if we are allowed to access this web page.
      */
-    private boolean robotsCheck() {
+    private boolean robotsAllowed() {
 //        if(!checkedRobots.contains(getRobotsURL()))
 //            checkRobots();
-
-        return !URL.contains(QUESTION_EVERYTHING);// && robotExclusion.allows(new URL(URL),"TCSS422 Bot");
+        try {
+            return new RobotExclusion().allows(new URL(URL),USER_AGENT) && !URL.contains(QUESTION_EVERYTHING);// && robotExclusion.allows(new URL(URL),"TCSS422 Bot");
+        } catch(MalformedURLException e) {
+            return false;
+        }
     }
 
 
@@ -44,13 +48,16 @@ public class PageRetrieverTask extends Task {
     public void run() {
         if(accessedPages.contains(URL)) return; //ignore duplicates
         accessedPages.add(URL);
-        boolean allowed = robotsCheck();
+        boolean allowed = robotsAllowed();
         //System.out.println("PageRetrieverTask (" + URL + ") " + allowed);
-        if(!allowed) return; //cancel
+        if(!allowed) {
+            System.out.println("NO BOTS ALLOWED :(");
+            return; //cancel
+        }
         //get the page
         String text = getPageText();
         if(text != null) { //make sure we got the page
-            this.addGeneratedTask(new PageParserTask(URL,text,getSharedData()));
+            this.addGeneratedTask(new PageParserTask(URL, text, getSharedData()));
         }/* else {
             System.out.println("error");
         }*/

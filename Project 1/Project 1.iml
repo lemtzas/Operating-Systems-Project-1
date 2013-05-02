@@ -12,6 +12,8 @@
     <orderEntry type="library" name="jrobotx-0.1" level="project" />
     <orderEntry type="library" name="commons-io-2.4" level="project" />
     <orderEntry type="library" name="commons-cli-1.2" level="project" />
+    <orderEntry type="library" name="commons-logging-1.1.2" level="project" />
+    <orderEntry type="library" name="log4j-1.2.17" level="project" />
   </component>
 </module>
 

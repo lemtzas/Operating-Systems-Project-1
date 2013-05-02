@@ -28,7 +28,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         //interpret command line
-        CommandLineParser parser = new BasicParser();
+        CommandLineParser parser = new GnuParser();
         Options options = new Options();
         options.addOption("s","single-threaded-one-pool",false,"single-threaded singular pool");
         options.addOption("m","multi-threaded-one-pool",true,"multi-threaded singular pool");
@@ -78,8 +78,8 @@ public class Main {
                 singleThreadedOnePool(keywords,max,url);
             } else if(line.hasOption("m")) { //multi-threaded option
                 try{
-                    int threads = Integer.parseInt(line.getOptionValue("m","5"));
-                    multiThreadedOnePool(DEFAULT_KEYWORDS, DEFAULT_MAX, url, threads);
+                    int threads = Integer.parseInt(line.getOptionValue("m", "5"));
+                    multiThreadedOnePool(keywords, max, url, threads);
                 } catch(Exception e) {
                     System.out.println("invalid argument multi-threaded.");
                 }
@@ -92,7 +92,7 @@ public class Main {
                         y = x = Integer.parseInt(counts[0]);
                     if(counts.length >= 2)
                         y = Integer.parseInt(counts[1]);
-                    multiPool(DEFAULT_KEYWORDS, DEFAULT_MAX, url, x, y);
+                    multiPool(keywords, max, url, x, y);
                 } catch(Exception e) {
                     System.out.println("invalid arguments.");
                 }
