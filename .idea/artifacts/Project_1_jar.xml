@@ -10,6 +10,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/Project 1/commons-validator-1.4.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/Project 1/jrobotx-0.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/Project 1/commons-io-2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/Project 1/commons-cli-1.2.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

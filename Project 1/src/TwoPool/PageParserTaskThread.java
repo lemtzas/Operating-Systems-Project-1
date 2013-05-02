@@ -1,36 +1,42 @@
+package TwoPool;
+
 import Tasks.SharedData;
 import Tasks.Task;
 
 import java.util.Set;
 
 /**
- * One of the threads in the thread pool
+ * Created with IntelliJ IDEA.
+ * User: Lemtzas
+ * Date: 5/2/13
+ * Time: 4:33 AM
+ * To change this template use File | Settings | File Templates.
  */
-public class ExecutionThread implements Runnable {
+public class PageParserTaskThread implements Runnable {
     private final SharedData sharedData;
-    private final boolean IOThread;
+    private final SharedQueues sharedQueues;
 
     /**
      * Instantiates an Execution Thread
      * @param sharedData Data in the shared space
-     * @param IOThread Should this thread perform I/O?
+     * @param sharedQueues
      */
-    public ExecutionThread(SharedData sharedData, boolean IOThread) {
+    public PageParserTaskThread(SharedData sharedData, SharedQueues sharedQueues) {
         this.sharedData = sharedData;
-        this.IOThread = IOThread;
+        this.sharedQueues = sharedQueues;
     }
 
     @Override
     public void run() {
         Task task = null;
         while(!sharedData.isDone()) {
-            task = sharedData.taskQueue.getTask(IOThread);
+            task = sharedQueues.getParserTask();
             if(task != null) {
                 //run the task
                 task.run();
                 //update the task queue
                 Set<Task> newTasks = task.getGeneratedTasks();
-                sharedData.taskQueue.addTasks(newTasks);
+                sharedQueues.addTasks(newTasks);
                 sharedData.incrementProcessedTaskCount();
             }
             //are we done yet?

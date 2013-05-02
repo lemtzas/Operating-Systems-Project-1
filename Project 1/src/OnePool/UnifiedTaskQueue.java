@@ -1,19 +1,17 @@
-package Tasks;
+package OnePool;
 
-import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
-import sun.org.mozilla.javascript.internal.ast.ConditionalExpression;
+import Tasks.Task;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * A multi-threaded task queue
+ * A multi-threaded task queue with a single line of tasks (plus output tasks);
  */
-public class TaskQueue {
+public class UnifiedTaskQueue implements TaskQueue {
     private static final int SIZE_LIMIT = -1;
 
     private final PriorityQueue<Task> taskQueue = new PriorityQueue<Task>();
@@ -23,14 +21,23 @@ public class TaskQueue {
     private final Condition notEmpty   = lock.newCondition();
     private final Condition IOnotEmpty = lock.newCondition();
 
-    public final Task getTask(boolean IOThread) {
+    /**
+     * Gets a task
+     * @param IOThread Should we prioritize io tasks?
+     * @param done instead of blocking, we'll return immediately. If it is an IOThread, we'll process the rest of the IOQueue
+     * @return
+     */
+    public final Task getTask(boolean IOThread, boolean done) {
+        if(!IOThread && done) return null;
         Task task = null;
         lock.lock();
         try {
-            //if this is from an IOThread, check for an IO process each time
+            //if this is from an TwoPool.IOThread, check for an IO process each time
             if(IOThread && !IOQueue.isEmpty()) {
                 task = IOQueue.poll();
             } else {
+                if(IOQueue.isEmpty() && done) return null;
+
                 if(taskQueue.isEmpty())
                     notEmpty.await();
 
@@ -57,7 +64,7 @@ public class TaskQueue {
                 boolean task = false;
 
                 for(Task t: tasks) {
-                    if(t instanceof IOTask) {
+                    if(t instanceof Tasks.IOTask) {
                         IOQueue.add(t);
                         IOTask = true;
                     } else {

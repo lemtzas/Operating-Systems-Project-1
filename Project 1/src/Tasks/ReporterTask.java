@@ -16,9 +16,11 @@ public class ReporterTask extends IOTask {
     @Override
     public void run() {
         //System.out.println("start ReporterTask");
+
         System.out.println("------------------------------");
         System.out.println(snapshot);
         System.out.println("------------------------------");
+
         //System.out.println("end ReporterTask");
     }
 }

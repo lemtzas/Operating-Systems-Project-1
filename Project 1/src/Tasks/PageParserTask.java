@@ -32,7 +32,7 @@ public class PageParserTask extends Task {
 
     @Override
     public void run() {
-        System.out.println("PageParserTask (" + URL + ")");
+        //System.out.println("PageParserTask (" + URL + ")");
 
         final long startTime = System.currentTimeMillis();
 
@@ -86,5 +86,13 @@ public class PageParserTask extends Task {
         getSharedData().addLinks(linkCount);
         getSharedData().addWords(wordCount);
         getSharedData().addParseTime(System.currentTimeMillis() - startTime);
+
+
+        //this used to be in DataGatherer
+        getSharedData().updateRuntime();
+        DataSnapshot snapshot = getSharedData().getSnapshot();
+        snapshot.pageParsed = URL;
+        if(!getSharedData().checkOvermax()) //make sure we stop at the right time
+            this.addGeneratedTask(new ReporterTask(getSharedData(),snapshot));
     }
 }

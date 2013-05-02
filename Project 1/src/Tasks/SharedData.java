@@ -1,5 +1,7 @@
 package Tasks;
 
+import OnePool.*;
+
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,7 +10,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * The data shared between threads
  */
 public class SharedData {
-    public final TaskQueue taskQueue = new TaskQueue();
     public final String[] keywords;
 
 
@@ -88,15 +89,18 @@ public class SharedData {
 
     public void parsedPage() {
         dataSnapshotLock.lock();
-        dataSnapshot.pageCount++;
+        dataSnapshot.pageCount += 1;
         dataSnapshotLock.unlock();
     }
 
-    public void checkOvermax() {
+    public boolean checkOvermax() {
         dataSnapshotLock.lock();
-        if(dataSnapshot.pageCount > dataSnapshot.pageLimit)
+        if(dataSnapshot.pageCount > dataSnapshot.pageLimit) {
             this.done = true;
+            System.out.println(dataSnapshot.pageCount + " > " + dataSnapshot.pageLimit + " -> done");
+        }
         dataSnapshotLock.unlock();
+        return this.done;
     }
 
     public void addLinks(int linkCount) {

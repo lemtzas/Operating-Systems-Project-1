@@ -11,6 +11,7 @@
     <orderEntry type="library" name="commons-validator-1.4.0" level="project" />
     <orderEntry type="library" name="jrobotx-0.1" level="project" />
     <orderEntry type="library" name="commons-io-2.4" level="project" />
+    <orderEntry type="library" name="commons-cli-1.2" level="project" />
   </component>
 </module>
 

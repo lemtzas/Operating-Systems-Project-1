@@ -20,7 +20,7 @@ public class PageRetrieverTask extends Task {
     public static final int PRIORITY = 1;
 
     private String URL;
-    private static final int TIMEOUT = 300;
+    private static final int TIMEOUT = 1000;
 
     public PageRetrieverTask(String URL, SharedData sharedData) {
         super(sharedData,PRIORITY);
@@ -45,15 +45,15 @@ public class PageRetrieverTask extends Task {
         if(accessedPages.contains(URL)) return; //ignore duplicates
         accessedPages.add(URL);
         boolean allowed = robotsCheck();
-        System.out.println("PageRetrieverTask (" + URL + ") " + allowed);
+        //System.out.println("PageRetrieverTask (" + URL + ") " + allowed);
         if(!allowed) return; //cancel
         //get the page
         String text = getPageText();
         if(text != null) { //make sure we got the page
             this.addGeneratedTask(new PageParserTask(URL,text,getSharedData()));
-        } else {
+        }/* else {
             System.out.println("error");
-        }
+        }*/
     }
 
     private String getPageText() {
