@@ -34,7 +34,7 @@ public class PageParserTask extends Task {
         Elements links = doc.select("a[href]");
         for(Element link : links) {
             String linkText = link.attr("abs:href");
-            System.out.println("  site (" + urlValidator.isValid(linkText) + "+"+(linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))+"): " + linkText);
+            //System.out.println("  site (" + urlValidator.isValid(linkText) + "+"+(linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))+"): " + linkText);
             if(urlValidator.isValid(linkText) &&
                     //only follow specified files (hackish way)
                     (linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))) {

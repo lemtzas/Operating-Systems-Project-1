@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class PageRetrieverTask extends Task {
     private static final ConcurrentSkipListSet<String> checkedRobots = new ConcurrentSkipListSet<String>();
     private static final ConcurrentSkipListSet<String> ignoreURLs = new ConcurrentSkipListSet<String>();
+    private static final ConcurrentSkipListSet<String> accessedPages = new ConcurrentSkipListSet<String>();
     static {
         ignoreURLs.add("http://questioneverything.typepad.com/");
     }
@@ -42,17 +43,32 @@ public class PageRetrieverTask extends Task {
         return ignoreURLs.contains(this.URL.toLowerCase());
     }
 
+    private String getRobotsURL() {
+        try {
+            URL url = new URL(this.URL);
+            String root = url.getProtocol() + "://" + url.getHost();
+            return root;
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     private void checkRobots() {
         try {
             String root  = getRobotsURL();
+            String robots = root + "/robots.txt";
+            System.out.println(" checking for robots: " + root);
+            checkedRobots.add(root);
             URL url;
             if(root != null)
-                url = new URL(root);
+                url = new URL(robots);
             else
                 return;
 
 
             URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             connection.getInputStream()));
@@ -63,7 +79,7 @@ public class PageRetrieverTask extends Task {
                 //parse the line
                 if(inputLine.toLowerCase().startsWith("disallow: ")) {
                     String path = inputLine.substring("disallow: ".length());
-                    System.out.println("    ignore: " + root + path);
+                    System.out.println("    disallow: " + root + path);
                     ignoreURLs.add(root + path);
                 }
             }
@@ -75,6 +91,8 @@ public class PageRetrieverTask extends Task {
 
     @Override
     public void run() {
+        if(accessedPages.contains(URL)) return; //ignore duplicates
+        accessedPages.add(URL);
         boolean allowed = robotsCheck();
         System.out.println("PageRetrieverTask (" + URL + ") " + allowed);
         if(!allowed) return; //cancel
@@ -104,16 +122,6 @@ public class PageRetrieverTask extends Task {
                 sb.append(inputLine).append('\n');
             in.close();
             return sb.toString();
-        } catch(Exception e) {
-            return null;
-        }
-    }
-
-    private String getRobotsURL() {
-        try {
-            URL url = new URL(this.URL);
-            String root = url.getProtocol() + "://" + url.getHost();
-            return root;
         } catch(Exception e) {
             return null;
         }
