@@ -7,7 +7,8 @@ import java.util.PriorityQueue;
  */
 public class SharedData {
     public final TaskQueue taskQueue = new TaskQueue();
-
+	
+	private final ArrayList<DataSnapshot()> testStrings = new ArrayList<DataSnapshot()>();
     /**
      * @return a snapshot of the current stats
      */
@@ -34,6 +35,7 @@ public class SharedData {
         //TODO: Make this thread safe
         processedTaskCount++;
     }
+	public final 
 
     private boolean done = false;
     public boolean isDone() {

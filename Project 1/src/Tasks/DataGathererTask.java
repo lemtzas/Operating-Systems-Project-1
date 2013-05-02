@@ -14,6 +14,14 @@ public class DataGathererTask extends Task {
     @Override
     public void run() {
         System.out.println("start DataGathererTask");
+		Pattern p = Pattern.compile(HTML, Pattern.CASE_INSENSITIVE);
+		for(int i=0; i< ; i++){
+			Matcher m = p.Matcher("");
+			while(m.find()) {
+				//access and increment DataSnapshot
+			}
+		}		
+		
         //TODO: Update Stats.
         //TODO: Add stats to output Queue
         //TODO: Tell GUI there are stats to display
