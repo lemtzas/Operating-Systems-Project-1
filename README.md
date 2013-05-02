@@ -1,13 +1,19 @@
 Operating-Systems-Project-1
 ===========================
 ## Command Line Options ##
+```
 -s : Single-threaded single-pool mode
--m <threads> : multi-threaded single-pool mode
--d <retriever_threads> <parser_threads> : multi-threaded single-pool mode
--url <url> : specify url
--keywords <keywords> : specify keywords
--max <pages> : specify the maximum number of pages
 
+-m <threads> : multi-threaded single-pool mode
+
+-d <retriever_threads> <parser_threads> : multi-threaded single-pool mode
+
+-url <url> : specify url
+
+-keywords <keywords> : specify keywords
+
+-max <pages> : specify the maximum number of pages
+```
 
 A web crawler, meant to test our knowledge of threading system.s
 
