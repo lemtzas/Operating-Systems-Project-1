@@ -4,16 +4,16 @@ package Tasks;
  * Stores a snapshot of the rolling data statistics
  */
 public class DataSnapshot {
-    Map<String, int> testMap;
-	String pageParsed;
-	int wordCount;
-	int urlCount;
-	int pageCount;
-	int pageLimit;
-	long totalParseTime;
+    Map<String, int> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
+	String pageParsed; 			// Original page input to the parser
+	int wordCount; 				// Word count for all pages parsed
+	int urlCount;				// url count for all pages parsed
+	int pageCount;				// Number of pages parsed
+	int pageLimit;				// Max number of pages that can be parsed
+	long totalParseTime;		// Total time spent parsing pages
 	
 	
-	public DataSnapshot(int pLimit, String pParsed) {
+	public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
 		testMap = new Map<String, int>();
 		pageLimit = pLimit;
 		pageParsed = pParsed;
@@ -26,28 +26,12 @@ public class DataSnapshot {
 		super(0, "");
 	}
 	
-	public void incHitCount () {
-		hitCount++;
-	}
-	
 	public void setWordCount (int count) {
 		wordCount = count;
 	}
 	
-	public void setTestString(String test) {
-		testString = test;
-	}
-	
 	public void incURLCount () {
 		urlCount++
-	}
-	
-	public String getTestString() {
-		return testString;
-	}
-	
-	public int getHitCount() {
-		return hitCount;
 	}
 	
 	public int getWordCount() {

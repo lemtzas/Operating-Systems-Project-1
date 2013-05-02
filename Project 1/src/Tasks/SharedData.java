@@ -8,7 +8,6 @@ import java.util.PriorityQueue;
 public class SharedData {
     public final TaskQueue taskQueue = new TaskQueue();
 	
-	private final ArrayList<DataSnapshot()> testStrings = new ArrayList<DataSnapshot()>();
     /**
      * @return a snapshot of the current stats
      */
@@ -16,7 +15,7 @@ public class SharedData {
         return new DataSnapshot();
     }
 
-
+	// DataSnapshot now holds page count as well, may want to only hold it there
     private int processedPageCount = 0;
     private int processedTaskCount = 0;
     public final int getProcessedPageCount() {
