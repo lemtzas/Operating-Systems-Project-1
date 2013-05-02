@@ -34,10 +34,11 @@ public class PageParserTask extends Task {
         Elements links = doc.select("a[href]");
         for(Element link : links) {
             String linkText = link.attr("abs:href");
-            System.out.println("  site (" + urlValidator.isValid(linkText) + "): " + linkText);
-            if(urlValidator.isValid(linkText)) {
+            System.out.println("  site (" + urlValidator.isValid(linkText) + "+"+(linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))+"): " + linkText);
+            if(urlValidator.isValid(linkText) &&
+                    //only follow specified files (hackish way)
+                    (linkText.endsWith(".htm") || linkText.endsWith(".html") || linkText.endsWith(".txt"))) {
                 this.addGeneratedTask(new PageRetrieverTask(linkText,getSharedData()));
-                System.out.println("  site: " + linkText);
             }
         }
 
@@ -45,6 +46,5 @@ public class PageParserTask extends Task {
         String text = doc.title() + doc.head().html() + doc.body().html();
 
         this.addGeneratedTask(new DataGathererTask(getSharedData(), text, doc));
-        System.out.println("end PageParserTask");
     }
 }

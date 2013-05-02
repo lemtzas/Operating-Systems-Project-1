@@ -17,9 +17,10 @@ public class PageRetrieverTask extends Task {
     }
 
     /**The priority of these tasks. Higher is Better.**/
-    public static final int PRIORITY = -1;
+    public static final int PRIORITY = 1;
 
     private String URL;
+    private static final int TIMEOUT = 300;
 
     public PageRetrieverTask(String URL, SharedData sharedData) {
         super(sharedData,PRIORITY);
@@ -79,9 +80,10 @@ public class PageRetrieverTask extends Task {
         if(!allowed) return; //cancel
         //get the page
         String text = getPageText();
-        System.out.println(text.length());
         if(text != null) { //make sure we got the page
             this.addGeneratedTask(new PageParserTask(URL,text,getSharedData()));
+        } else {
+            System.out.println("error");
         }
     }
 
@@ -89,6 +91,8 @@ public class PageRetrieverTask extends Task {
         try {
             URL url = new URL(this.URL);
             URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             connection.getInputStream()));
