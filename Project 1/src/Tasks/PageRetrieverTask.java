@@ -26,7 +26,7 @@ public class PageRetrieverTask extends Task {
         String text = getPageText();
         System.out.println(text.length());
         if(text != null) { //make sure we got the page
-            this.addGeneratedTask(new PageParserTask(text,getSharedData()));
+            this.addGeneratedTask(new PageParserTask(URL,text,getSharedData()));
         }
         System.out.println("end PageRetrieverTask");
     }

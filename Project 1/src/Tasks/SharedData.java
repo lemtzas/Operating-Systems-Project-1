@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
  */
 public class SharedData {
     public final TaskQueue taskQueue = new TaskQueue();
-
+	
     /**
      * @return a snapshot of the current stats
      */
@@ -15,7 +15,7 @@ public class SharedData {
         return new DataSnapshot();
     }
 
-
+	// DataSnapshot now holds page count as well, may want to only hold it there
     private int processedPageCount = 0;
     private int processedTaskCount = 0;
     public final int getProcessedPageCount() {
@@ -34,7 +34,7 @@ public class SharedData {
         //TODO: Make this thread safe
         processedTaskCount++;
     }
-
+	
     private boolean done = false;
     public boolean isDone() {
         //TODO: Make this thread safe

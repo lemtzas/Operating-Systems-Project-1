@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="commons-validator-1.4.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Project 1/commons-validator-1.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="http://commons.apache.org/proper/commons-validator/javadocs/api-1.4.0/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
