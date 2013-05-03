@@ -38,7 +38,6 @@ public class ExecutionThread implements Runnable {
             //update the task queue
             Set<Task> newTasks = task.getGeneratedTasks();
             taskQueue.addTasks(newTasks);
-            sharedData.incrementProcessedTaskCount();
         }
     }
 }

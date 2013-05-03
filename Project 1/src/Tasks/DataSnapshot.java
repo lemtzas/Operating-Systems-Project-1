@@ -2,14 +2,12 @@ package Tasks;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Stores a snapshot of the rolling data statistics
+ * Stores a snapshot of the rolling data statistics. Also contains logic for the output.
  */
 public class DataSnapshot {
-    public Map<String, Integer> testMap; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
+    public Map<String, Integer> wordCounts; 	// Using the Strings held as the keys for the int of the number of hits each word has gotten
     public String pageParsed; 			// Original page input to the parser
     public int wordCount; 				// Word count for all pages parsed
     public int urlCount;				// url count for all pages parsed
@@ -19,7 +17,7 @@ public class DataSnapshot {
     public long totalRunTime;		// Total time spent parsing pages
 
     public DataSnapshot(int pLimit, String pParsed) {		// Constructor for a datatype that holds all required output data
-		testMap = new HashMap<String, Integer>();
+		wordCounts = new HashMap<String, Integer>();
 		pageLimit = pLimit;
 		pageParsed = pParsed;
 		wordCount = 0;
@@ -35,7 +33,7 @@ public class DataSnapshot {
 	}
 
     public DataSnapshot(DataSnapshot other) {
-        this.testMap = (HashMap<String,Integer>)((HashMap<String,Integer>)other.testMap).clone();
+        this.wordCounts = (HashMap<String,Integer>)((HashMap<String,Integer>)other.wordCounts).clone();
 
         //straight copy
         this.pageParsed = other.pageParsed;
@@ -58,8 +56,8 @@ public class DataSnapshot {
         sb.append("Average words per page: ").append(wordCount/pageCount).append("\n");
         sb.append("Average URLs per page: ").append(urlCount/pageCount).append("\n");
         sb.append("\tKeyword\t\tAve. hits per page\t\tTotal hits\n");
-        for(String s : testMap.keySet())
-            sb.append("  ").append(String.format(print, s, testMap.get(s) / (double) pageCount, testMap.get(s))).append("\n");
+        for(String s : wordCounts.keySet())
+            sb.append("  ").append(String.format(print, s, wordCounts.get(s) / (double) pageCount, wordCounts.get(s))).append("\n");
         sb.append("Page Limit: ").append(pageLimit).append("\n");
         sb.append("Average Parse time per page: ").append(totalParseTime / (double) pageCount / 1000d).append("\n");
         sb.append("Total running time: ").append(totalRunTime / 1000d).append("\n");

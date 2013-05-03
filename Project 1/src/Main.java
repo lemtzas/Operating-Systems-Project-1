@@ -17,7 +17,7 @@ import java.util.Arrays;
  * The Entry Point
  */
 public class Main {
-    private static final String ROOT = "http://faculty.washington.edu/gmobus/";
+    private static final String DEFAULT_ROOT = "http://faculty.washington.edu/gmobus/";
     private static final int DEFAULT_MAX = 5;
     private static final String[] DEFAULT_KEYWORDS =
             {"intelligence","artificial","agent","university","research","science","robot"};
@@ -25,7 +25,11 @@ public class Main {
 
     private Main() {}
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * Handle args and determine what to run.
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
 
         //interpret command line
         CommandLineParser parser = new GnuParser();
@@ -54,7 +58,7 @@ public class Main {
             if(line.hasOption("keywords")) //override the default keywords
                 keywords = line.getOptionValues("keywords");
 
-            String url = ROOT;
+            String url = DEFAULT_ROOT;
             if(line.hasOption("url"))
                 url = line.getOptionValue("url");
 
@@ -104,6 +108,7 @@ public class Main {
         }
     }
 
+    /** Run an instance of the single-threaded crawler**/
     public static void singleThreadedOnePool(final String[] keywords, final int pageLimit, String url) {
         final TaskQueue taskQueue = new UnifiedTaskQueue();
 
@@ -119,6 +124,7 @@ public class Main {
         executionThread.run();
     }
 
+    /**Run an instance of the multi-threaded crawler (with one thread pool)**/
     public static void multiThreadedOnePool(final String[] keywords, final int pageLimit, String url, final int threads) {
         final TaskQueue taskQueue = new UnifiedTaskQueue();
 
@@ -138,6 +144,7 @@ public class Main {
         executionThread.run();
     }
 
+    /**Run an instance of the multi-threaded crawler (with two thread pools)**/
     public static void multiPool(final String[] keywords, final int pageLimit, String url, final int retrievers, final int parsers) {
 
         SharedQueues sharedQueues = new SharedQueues();

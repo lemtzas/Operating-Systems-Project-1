@@ -6,15 +6,12 @@ import Tasks.Task;
 import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Lemtzas
- * Date: 5/2/13
- * Time: 4:34 AM
- * To change this template use File | Settings | File Templates.
+ * A thread that executes only PageRetrieverTasks from the TwoPool model.
  */
 public class PageRetrieverTaskThread implements Runnable {
 
     private final SharedData sharedData;
+    /**The queues where pending tasks are stored**/
     private final SharedQueues sharedQueues;
 
     /**
@@ -38,7 +35,6 @@ public class PageRetrieverTaskThread implements Runnable {
                 //update the task queue
                 Set<Task> newTasks = task.getGeneratedTasks();
                 sharedQueues.addTasks(newTasks);
-                sharedData.incrementProcessedTaskCount();
             }
             //are we done yet?
             //TODO: Make sure this checks for active tasks

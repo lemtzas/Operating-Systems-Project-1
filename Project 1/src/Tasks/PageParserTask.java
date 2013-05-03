@@ -13,7 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A stub for the PageParserTask
+ * Parses a page and generates stats.
+ *
+ * Creates a ReporterTask to output the stats at this point.
  */
 public class PageParserTask extends Task {
     private static final UrlValidator urlValidator = new UrlValidator(new String[]{"http","https"});

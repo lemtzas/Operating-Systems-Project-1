@@ -1,7 +1,7 @@
 package Tasks;
 
 /**
- * Prints the output
+ * Prints the output during a given state (determined by the passed snapshot).
  */
 public class ReporterTask extends IOTask {
     private static final int PRIORITY = -2;

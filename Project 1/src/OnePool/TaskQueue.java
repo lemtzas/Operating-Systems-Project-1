@@ -15,6 +15,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * A multi-threaded task queue
  */
 public interface TaskQueue {
+    /**Get the task with the highest priority. IOTasks only go to the IOThread.**/
     public Task getTask(boolean IOThread, boolean done);
+    /**Add a task.**/
     public void addTasks(Collection<Task> tasks);
 }

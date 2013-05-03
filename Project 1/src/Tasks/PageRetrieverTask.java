@@ -10,9 +10,11 @@ import java.net.URLConnection;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
- * Retrieves a page and generates the task to process it
+ * Retrieves a page and generates the task to process it.
+ * Uses jrobotx to conform to robots.txt exclusion.
  */
 public class PageRetrieverTask extends Task {
+    /**access page log to prevent repeat loops**/
     private static final ConcurrentSkipListSet<String> accessedPages = new ConcurrentSkipListSet<String>();
     private static final String QUESTION_EVERYTHING = "questioneverything.typepad.com";
     private static final String USER_AGENT = "Batman";
